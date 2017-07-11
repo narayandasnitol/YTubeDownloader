@@ -1,13 +1,17 @@
 package com.nitol.aust.cse.ytubedownloader;
 
+import android.app.DownloadManager;
+import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.webkit.DownloadListener;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
@@ -17,6 +21,7 @@ public class Download extends Fragment{
     View v;
     WebView webView2;
     SwipeRefreshLayout mySwipeRefreshLayout;
+    DownloadManager downloadManager;
 
     public String currentUrl = "http://youtube.com";
     String myLink = "";
@@ -57,10 +62,24 @@ public class Download extends Fragment{
             webView2.loadUrl(value);
         }
 
-        Log.e("link = ", webView2.getUrl());
+        webView2.setDownloadListener(new DownloadListener() {
+            public void onDownloadStart(String url, String userAgent,
+                                        String contentDisposition, String mimetype,
+                                        long contentLength) {
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+
+                downloadManager = (DownloadManager) getContext().getSystemService(Context.DOWNLOAD_SERVICE);
+                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                Long reference = downloadManager.enqueue(request);
+            }
+        });
+
+
+
 
         return v;
-
     }
 
 }
