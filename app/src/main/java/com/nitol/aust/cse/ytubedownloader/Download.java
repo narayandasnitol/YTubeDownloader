@@ -15,6 +15,7 @@ import android.webkit.DownloadListener;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
+import android.widget.ProgressBar;
 
 public class Download extends Fragment{
 
@@ -22,8 +23,9 @@ public class Download extends Fragment{
     WebView webView2;
     SwipeRefreshLayout mySwipeRefreshLayout;
     DownloadManager downloadManager;
+    private ProgressBar progress;
 
-    public String currentUrl = "http://youtube.com";
+    public String currentUrl = "";
     String myLink = "";
 
     @Override
@@ -41,6 +43,7 @@ public class Download extends Fragment{
         webView2.getSettings().setUseWideViewPort(true);
         webView2.setScrollBarStyle(WebView.SCROLLBARS_OUTSIDE_OVERLAY);
         webView2.setScrollbarFadingEnabled(false);
+        webView2.setVerticalScrollBarEnabled(false);
         webView2.loadUrl(currentUrl);
         webView2.setWebViewClient(new WebViewClient());
         webView2.getSettings().setBuiltInZoomControls(true);
@@ -52,7 +55,6 @@ public class Download extends Fragment{
                 return (event.getAction() == MotionEvent.ACTION_MOVE);
             }
         });
-        webView2.setVerticalScrollBarEnabled(false);
 
         Bundle bundle = getArguments();
         if(bundle!= null)
