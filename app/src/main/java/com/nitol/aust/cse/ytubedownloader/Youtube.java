@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -44,6 +45,26 @@ public class Youtube extends Fragment{
         webView.getSettings().setLoadWithOverviewMode(true);
         webView.getSettings().setCacheMode(WebSettings.LOAD_CACHE_ELSE_NETWORK);
 
+
+       webView.setOnKeyListener( new View.OnKeyListener()
+        {
+            @Override
+            public boolean onKey( View v, int keyCode, KeyEvent event )
+            {
+                if( keyCode == KeyEvent.KEYCODE_BACK && webView.canGoBack())
+                {
+                    webView.goBack();
+                    return true;
+                }else if( keyCode == KeyEvent.KEYCODE_FORWARD && webView.canGoForward()){
+                    webView.goForward();
+                    return true;
+                }
+
+                return false;
+            }
+        } );
+
+
         fabButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -74,9 +95,12 @@ public class Youtube extends Fragment{
                 }
         );
 
+
         return v;
 
     }
+
+
 
     public class MyWebViewClient extends WebViewClient{
 

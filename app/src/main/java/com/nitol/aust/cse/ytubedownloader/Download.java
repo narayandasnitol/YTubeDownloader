@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
@@ -15,7 +16,7 @@ import android.webkit.DownloadListener;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.webkit.WebViewClient;
-import android.widget.ProgressBar;
+import android.widget.Toast;
 
 public class Download extends Fragment{
 
@@ -23,7 +24,6 @@ public class Download extends Fragment{
     WebView webView2;
     SwipeRefreshLayout mySwipeRefreshLayout;
     DownloadManager downloadManager;
-    private ProgressBar progress;
 
     public String currentUrl = "";
     String myLink = "";
@@ -61,7 +61,7 @@ public class Download extends Fragment{
         {
             String value = getArguments().getString("link");
             myLink = value;
-            webView2.loadUrl(value);
+            webView2.loadUrl(myLink);
         }
 
         webView2.setDownloadListener(new DownloadListener() {
@@ -71,17 +71,23 @@ public class Download extends Fragment{
                 Intent i = new Intent(Intent.ACTION_VIEW);
                 i.setData(Uri.parse(url));
 
+
                 downloadManager = (DownloadManager) getContext().getSystemService(Context.DOWNLOAD_SERVICE);
                 DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
                 request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "Youtube_Video"+".mp4");
+                request.allowScanningByMediaScanner();
                 Long reference = downloadManager.enqueue(request);
+
+                Toast.makeText(getContext(), "Downloading...", Toast.LENGTH_LONG).show();
+
+
             }
         });
 
 
-
-
         return v;
     }
+
 
 }
