@@ -4,4 +4,6 @@
     <color name="colorPrimaryDark">#EF5350</color>
     <color name="colorAccent">#ffffff</color>
     <color name="tabBack">#EF5350</color>
+    <color name="colorBackground">#ffffff</color>
+    <color name="colorItemText">#111111</color>
 </resources>
