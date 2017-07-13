@@ -80,6 +80,8 @@ public class Youtube extends Fragment{
                         beginTransaction().replace(R.id.webView_download,fragment).commit();
 
                 Toast.makeText(getContext(), "Please go to Download Tab", Toast.LENGTH_SHORT).show();
+
+
             }
         });
 
@@ -114,6 +116,8 @@ public class Youtube extends Fragment{
         }
 
     }
+
+
 
 }
 

@@ -1,12 +1,15 @@
 package com.nitol.aust.cse.ytubedownloader;
 
+import android.Manifest;
 import android.app.DownloadManager;
 import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -31,11 +34,13 @@ public class Download extends Fragment{
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
 
-        v = inflater.inflate(R.layout.download, container,false);
+        v = inflater.inflate(R.layout.download, container, false);
 
         mySwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swiperefresh);
         webView2 = (WebView) v.findViewById(R.id.webView_download);
 
+        int permissionCheck = ContextCompat.checkSelfPermission(getContext(),
+                Manifest.permission.WRITE_EXTERNAL_STORAGE);
 
         webView2.setInitialScale(1);
         webView2.getSettings().setJavaScriptEnabled(true);
@@ -56,38 +61,48 @@ public class Download extends Fragment{
             }
         });
 
-        Bundle bundle = getArguments();
-        if(bundle!= null)
-        {
-            String value = getArguments().getString("link");
-            myLink = value;
-            webView2.loadUrl(myLink);
+
+        if (permissionCheck == PackageManager.PERMISSION_GRANTED) {
+            Bundle bundle = getArguments();
+
+            if (bundle != null) {
+                String value = getArguments().getString("link");
+                myLink = value;
+
+                webView2.loadUrl(myLink);
+            }
+
+            webView2.setDownloadListener(new DownloadListener() {
+                public void onDownloadStart(String url, String userAgent,
+                                            String contentDisposition, String mimetype,
+                                            long contentLength) {
+                    Intent i = new Intent(Intent.ACTION_VIEW);
+                    i.setData(Uri.parse(url));
+
+                    downloadManager = (DownloadManager) getContext().getSystemService(Context.DOWNLOAD_SERVICE);
+                    DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
+                    request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
+                    request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "video" + ".mp4");
+                    request.allowScanningByMediaScanner();
+                    Long reference = downloadManager.enqueue(request);
+
+
+                    Toast.makeText(getContext(), "Downloading...", Toast.LENGTH_LONG).show();
+
+                }
+            });
+
         }
 
-        webView2.setDownloadListener(new DownloadListener() {
-            public void onDownloadStart(String url, String userAgent,
-                                        String contentDisposition, String mimetype,
-                                        long contentLength) {
-                Intent i = new Intent(Intent.ACTION_VIEW);
-                i.setData(Uri.parse(url));
+        else {
 
-
-                downloadManager = (DownloadManager) getContext().getSystemService(Context.DOWNLOAD_SERVICE);
-                DownloadManager.Request request = new DownloadManager.Request(Uri.parse(url));
-                request.setNotificationVisibility(DownloadManager.Request.VISIBILITY_VISIBLE_NOTIFY_COMPLETED);
-                request.setDestinationInExternalPublicDir(Environment.DIRECTORY_DOWNLOADS, "Youtube_Video"+".mp4");
-                request.allowScanningByMediaScanner();
-                Long reference = downloadManager.enqueue(request);
-
-                Toast.makeText(getContext(), "Downloading...", Toast.LENGTH_LONG).show();
-
-
-            }
-        });
+            requestPermissions(new String[]{Manifest.permission.WRITE_EXTERNAL_STORAGE}, 1);
+        }
 
 
         return v;
     }
+
 
 
 }

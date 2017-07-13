@@ -25,8 +25,11 @@ public class YTubeDownloader extends AppCompatActivity {
         t1 = (TabLayout) findViewById(R.id.tab1);
         vp1 = (ViewPager) findViewById(R.id.ViewPager1);
 
+
         setUpMyViewPager(vp1);
         t1.setupWithViewPager(vp1);
+
+
 
     }
 
@@ -71,5 +74,6 @@ public class YTubeDownloader extends AppCompatActivity {
         }
 
     }
+
 
 }
