@@ -10,7 +10,6 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
-import android.support.v4.widget.SwipeRefreshLayout;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -25,7 +24,6 @@ public class Download extends Fragment{
 
     View v;
     WebView webView2;
-    SwipeRefreshLayout mySwipeRefreshLayout;
     DownloadManager downloadManager;
 
     public String currentUrl = "";
@@ -36,7 +34,6 @@ public class Download extends Fragment{
 
         v = inflater.inflate(R.layout.download, container, false);
 
-        mySwipeRefreshLayout = (SwipeRefreshLayout) v.findViewById(R.id.swiperefresh);
         webView2 = (WebView) v.findViewById(R.id.webView_download);
 
         int permissionCheck = ContextCompat.checkSelfPermission(getContext(),

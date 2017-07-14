@@ -26,7 +26,7 @@
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toTopOf="@+id/textView5"
-        app:layout_constraintVertical_bias="0.686" />
+        app:layout_constraintVertical_bias="1.0" />
 
     <TextView
         android:id="@+id/textView2"
@@ -89,7 +89,7 @@
         android:layout_marginLeft="8dp"
         app:layout_constraintLeft_toLeftOf="@+id/imageView"
         app:layout_constraintTop_toTopOf="parent"
-        android:layout_marginTop="348dp" />
+        android:layout_marginTop="316dp" />
 
 
 </android.support.constraint.ConstraintLayout>

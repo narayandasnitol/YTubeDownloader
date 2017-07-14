@@ -29,7 +29,7 @@
         android:src="@drawable/down"
         app:fabSize="normal"
         app:elevation="8dp"
-        android:backgroundTint="@color/colorPrimaryDark"/>
+        app:backgroundTint="@color/colorPrimaryDark"/>
 
 
 
